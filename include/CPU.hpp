@@ -2,7 +2,7 @@
 #define _CPU_
 
 #include <cstdint>
-#include "MainBus.hpp"
+#include <MainBus.hpp>
 
 class CPU {
  public:
@@ -20,14 +20,23 @@ class CPU {
   void reset();
   void reset(Address start);
   void step();
-  void log();
+  // void log();
 
   Address get_PC() {
     return r_pc;
   }
 
  private:
-  Address readAddress(Address addr);
+  // Instructions are split into five sets to make decoding easier
+  // These functions return true if they succeed
+  // Simulate instructions execution
+  bool executeImplied(Data opcode);
+  bool executeBranch(Data opcode);
+  bool executeType1(Data opcode);
+  bool executeType2(Data opcode);
+  bool executeType0(Data opcode);
+
+  Address readAddress(Address& addr);
   void push(Data value);
   Data pull();
 
@@ -52,9 +61,12 @@ class CPU {
   bool f_i; // IRQ disable     >>> 1 = disable        2
   bool f_d; // Decimal mode    >>> 1 = true           3
   bool f_b; // Brk command     >>> 1 = brk            4
-  // 5
+  bool f_u; // unused (always 1)                      5#
   bool f_v; // Overflow        >>> 1 = true           6
   bool f_n; // Negative        >>> 1 = neg            7
+
+  f_b = 0;
+  f_u = 1;
 
   MainBus& m_bus;
 };

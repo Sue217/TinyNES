@@ -1,4 +1,4 @@
-#include "MainBus.hpp"
+#include <MainBus.hpp>
 
 /* 2kB Interal RAM, mirrored 4 times */
 MainBus::MainBus() : m_RAM(0x800) {}

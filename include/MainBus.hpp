@@ -1,7 +1,7 @@
 #ifndef _MAIN_BUS_H_
 #define _MAIN_BUS_H_
 
-#include "Cartridge.hpp"
+#include <Cartridge.hpp>
 #include <vector>
 
 class MainBus {
