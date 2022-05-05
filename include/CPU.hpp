@@ -22,8 +22,13 @@ class CPU {
   void step();
   // void log();
 
-  Address get_PC() {
+  Address get_pc() {
     return r_pc;
+  }
+
+  //! OPEN THE API ONLY FOR TEST!
+  Data get_acc() {
+    return r_acc;
   }
 
  private:
@@ -36,7 +41,7 @@ class CPU {
   bool executeType2(Data opcode);
   bool executeType0(Data opcode);
 
-  Address readAddress(Address& addr);
+  Address readAddress(Address addr);
   void push(Data value);
   Data pull();
 
@@ -49,10 +54,9 @@ class CPU {
 
   // Registers
   std::uint16_t r_pc;
-  std::uint8_t r_p; // processor status (PSW/PSR)
   std::uint8_t r_sp;
-  std::uint8_t r_ix;
-  std::uint8_t r_iy;
+  std::uint8_t r_x;
+  std::uint8_t r_y;
   std::uint8_t r_acc;
 
   // Status flags
@@ -64,9 +68,6 @@ class CPU {
   bool f_u; // unused (always 1)                      5#
   bool f_v; // Overflow        >>> 1 = true           6
   bool f_n; // Negative        >>> 1 = neg            7
-
-  f_b = 0;
-  f_u = 1;
 
   MainBus& m_bus;
 };

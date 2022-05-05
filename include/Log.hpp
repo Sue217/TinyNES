@@ -9,11 +9,14 @@
 #ifndef _FILENAME_
 #define _FILENAME_ _FILE_
 #endif
-
+/*
 #define LOG(level)                                                             \
   if (level <= Log::get().getLevel())                                          \
   Log::get().getStream() << '[' << __FILENAME__ << ":" << std::dec << __LINE__ \
                          << "] "
+*/
+//! For test
+#define LOG(level) std::cout
 
 #define LOG_CPU \
   if (CpuTrace == Log::get().getLevel()) Log::get().getCpuTraceStream()

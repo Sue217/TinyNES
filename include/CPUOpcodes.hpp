@@ -32,26 +32,15 @@ enum branchOnFlag {
   Zero,
 };
 
-enum operation0 {
-  BIT = 1, /* N:=b7 V:=b6 Z:=ACC&{adr} */
-
-  STY = 4, /* STOREY {adr}:=Y */
-  LDY,     /* LOADY Y:={adr} */
-  CPY,     /* Y-{adr} */
-  
-  CPX,     /* X-{adr} */
-};
-
 enum operation1 {
   ORA, /* ACC:=ACC or {adr} */
   AND, /* ACC:=ACC&{adr} */
   EOR, /* ACC:=ACC exor {adr} */
   ADC, /* ACC:=ACC+{adr} */
-  SBC, /* ACC:=ACC-{adr} */
-  CMP, /* ACC-{adr} */
-
   STA, /* STOREACC {adr}:=ACC */
   LDA, /* LOADACC ACC:={adr} */
+  CMP, /* ACC-{adr} */
+  SBC, /* ACC:=ACC-{adr} */
 };
 
 enum operation2 {
@@ -59,12 +48,18 @@ enum operation2 {
   ROL, /* {adr}:={adr}*2+C */
   LSR, /* {adr}:={adr}/2 */
   ROR, /* {adr}:={adr}/2+C*128 */
-
   STX, /* {adr}:=X */
   LDX, /* X:={adr} */
-
   DEC, /* {adr}:={adr}-1 */
   INC, /* {adr}:={adr}+1 */
+};
+
+enum operation0 {
+  BIT = 1, /* N:=b7 V:=b6 Z:=ACC&{adr} */
+  STY = 4, /* STOREY {adr}:=Y */
+  LDY,     /* LOADY Y:={adr} */
+  CPY,     /* Y-{adr} */
+  CPX,     /* X-{adr} */
 };
 
 /*

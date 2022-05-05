@@ -314,3 +314,7 @@ the MCS650X uses "relative" addressing for all conditional test instructions. To
 SBC
 
 This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over- flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset. 
+
+## !DO NOT change the instructions (names) in the enum{}...
+
+**it will cause to fetch wrong operation instructions!!!**

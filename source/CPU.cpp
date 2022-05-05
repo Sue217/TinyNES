@@ -3,7 +3,10 @@
 #include <CPU.hpp>
 #include <Log.hpp>
 
-CPU::CPU(MainBus& mem) : m_bus(mem) {}
+CPU::CPU(MainBus& mem) : m_bus(mem) {
+  f_b = 0;
+  f_u = 1;
+}
 
 // void CPU::interrupt(InterruptType type)
 
@@ -32,7 +35,7 @@ void CPU::step() {
     return;
   }
   m_skipCycles = 0;
-  /* Generate Program Status Words(PSW) */
+  /* Generate Program Status Words(PSW)
   int psw = f_n << 7 |
             f_v << 6 |
             f_u << 5 |
@@ -41,6 +44,7 @@ void CPU::step() {
             f_i << 2 |
             f_z << 1 |
             f_c;
+  */
 
   Data opcode = m_bus.read(r_pc++);
   auto cycleLength = operationCycles[opcode];
@@ -53,7 +57,7 @@ void CPU::step() {
   }
 }
 
-Address CPU::readAddress(Address& addr) {
+Address CPU::readAddress(Address addr) {
   return m_bus.read(addr) | m_bus.read(addr + 1) << 8;
 }
 
@@ -66,9 +70,9 @@ Data CPU::pull() {
   return m_bus.read(0x100 | ++r_sp);
 }
 
-void CPU::setPageCrossed(Adderss x, Address y, int inc) {
+void CPU::setPageCrossed(Address x, Address y, int inc) {
   // Page is determined by the high byte
-  if ((a & 0xff00) != (b & 0xff00)) {
+  if ((x & 0xff00) != (y & 0xff00)) {
     m_skipCycles += inc;
   }
 }
@@ -306,7 +310,7 @@ bool CPU::executeType1(Data opcode) {
       case IndexedX:
         // M[R[r_pc] + R[r_x]]
         // Address wraps around in the zero page
-        location = (m_bus.read(r_pc++) + r_x) & 0xff'
+        location = (m_bus.read(r_pc++) + r_x) & 0xff;
         break;
       case AbsoluteY:
         location = readAddress(r_pc);
@@ -405,7 +409,7 @@ bool CPU::executeType1(Data opcode) {
 }
 
 bool CPU::executeType2(Data opcode) {
-  if ((opcode & instructionModeMask) == 2) {
+  if ((opcode & instructionModeMask) == 0x2) {
     Address location = 0;
     auto op = static_cast<operation2> ((opcode & operationMask) >> operationShift);
     auto addr_mode = static_cast<addrMode2> ((opcode & addrModeMask) >> addrModeShift);
