@@ -276,7 +276,9 @@ bool CPU::executeType1(Data opcode) {
   if ((opcode & instructionModeMask) == 0x1) {
     Address location = 0; // Location of the operand, could be in RAM
     auto op = static_cast<operation1> ((opcode & operationMask) >> operationShift);
-    switch (static_cast<addrMode1> ((opcode & addrModeMask) >> addrModeShift)) {
+    auto addr = static_cast<addrMode1> ((opcode & addrModeMask) >> addrModeShift);
+    
+    switch (addr) {
       case IndexedIndirectX:
         // M[R[r_x]]
         {
@@ -356,7 +358,7 @@ bool CPU::executeType1(Data opcode) {
            * SIGNED OVERFLOW, would only happen if the `sign` of sum is
            * different from BOTH the operands
            * Overflow: (+)+(+)=(-)
-           * Downflow: (-)+(-)=(+)
+           * Underflow: (-)+(-)=(+)
           */
           f_v = (r_acc ^ sum) & (operand ^ sum) & 0x80;
           r_acc = static_cast<Data> (sum);
@@ -413,6 +415,7 @@ bool CPU::executeType2(Data opcode) {
     Address location = 0;
     auto op = static_cast<operation2> ((opcode & operationMask) >> operationShift);
     auto addr_mode = static_cast<addrMode2> ((opcode & addrModeMask) >> addrModeShift);
+
     switch (addr_mode) {
       case Immediate_:
         location = r_pc++;
@@ -513,7 +516,10 @@ bool CPU::executeType2(Data opcode) {
 bool CPU::executeType0(Data opcode) {
   if ((opcode & instructionModeMask) == 0x0) {
     Address location = 0;
-    switch (static_cast<addrMode2> ((opcode & addrModeMask) >> addrModeShift)) {
+    auto op = static_cast<operation0>((opcode & operationMask) >> operationShift);
+    auto addr = static_cast<addrMode2> ((opcode & addrModeMask) >> addrModeShift);
+    
+    switch (addr) {
       case Immediate_:
         location = r_pc++;
         break;
@@ -539,7 +545,7 @@ bool CPU::executeType0(Data opcode) {
     }
 
     std::uint16_t operand = 0;
-    switch (static_cast<operation0>((opcode & operationMask) >> operationShift)) {
+    switch (op) {
       case BIT:
         operand = m_bus.read(location);
         f_z = !(r_acc & operand);

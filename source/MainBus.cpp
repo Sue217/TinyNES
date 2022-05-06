@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Log.hpp>
 #include <MainBus.hpp>
 #include <Cartridge.hpp>
 
@@ -29,4 +30,18 @@ void MainBus::write(const Address& addr, const Data& value) {
   if (addr < 0x2000) {
     m_RAM[addr & 0x7ff] = value;
   }
+}
+
+bool MainBus::setMapper(Mapper* mapper) {
+  m_mapper = mapper;
+  if (!mapper) {
+    LOG(Error) << "Mapper pointer is nullptr." << std::endl;
+    return false;
+  }
+  /*
+  if (mapper->hasExtendedRAM()) {
+    m_extRAM.resize(0x2000);
+  }
+  */
+  return true;
 }

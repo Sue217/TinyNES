@@ -3,9 +3,10 @@
 
 /* MCS 6502 CPU operation codes definition */
 
-/* 
- * When the 6502 starts up it loads an address vector from 0xFFFC/0xFFFD, sets its 
- * program counter to that address, and start fetching instructions from there.
+/*
+ *        7  6  5    4  3  2    1  0
+ * Data: [op op op] [ad ad ad] [im im]
+ *       operation  address  instruction mode(00~10)
 */
 
 constexpr auto instructionModeMask = 0x3;
@@ -20,6 +21,11 @@ constexpr auto branchInstructionMask = 0x1f;
 constexpr auto branchInstructionMaskResult = 0x10;
 constexpr auto branchConditionMask = 0x20;
 constexpr auto branchOnFlagShift = 6;
+
+/* 
+ * When the 6502 starts up it loads an address vector from 0xFFFC/0xFFFD, sets its 
+ * program counter to that address, and start fetching instructions from there.
+*/
 
 constexpr auto NMI = 0xfffa;
 constexpr auto RESET = 0xfffc;

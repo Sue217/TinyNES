@@ -318,3 +318,15 @@ This instruction affects the accumulator. The carry flag is set if the result is
 ## !DO NOT change the instructions (names) in the enum{}...
 
 **it will cause to fetch wrong operation instructions!!!**
+
+## 
+
+```cpp
+/*
+ *        7  6  5    4  3  2    1  0
+ * Data: [op op op] [ad ad ad] [im im]
+ *       operation  address  instruction mode(00~10)
+*/
+```
+
+**The number of times the pc is incremented by one depends on the number of times the operation is fetched from memory.**

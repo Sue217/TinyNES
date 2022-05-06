@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/sudo/Desktop/practice/NES'
+g++  ./build/CPU.o ./build/Cartridge.o ./build/Emulator.o ./build/Log.o ./build/MainBus.o ./build/Mapper.o ./build/MapperNROM.o ./build/main.o -o run  
+make: Leaving directory `/Users/sudo/Desktop/practice/NES'
+ 

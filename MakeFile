@@ -15,7 +15,7 @@ SOURCES = $(wildcard ${SRC}/*.cpp)
 OBJS = $(patsubst %.cpp,${BUD}/%.o,$(notdir ${SOURCES}))
 
 # $(info $(OBJS))
-TARGET = NES
+TARGET = run
 
 # $@: target $^: all dependent files $<: the first dependent file
 ${TARGET}: ${OBJS}
