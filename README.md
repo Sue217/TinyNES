@@ -149,3 +149,55 @@ make clean
 ```
 
 😅 Emmm...
+
+**Last test caused the segmentation fault !!!**
+So **DO NOT FORGET TO COMMENT THE PREVIOUS TEST CODE !!!**
+
+**For Example**
+MainBus.cpp:20:
+
+```cpp
+// For Test
+if (addr >= 0x8000) {
+  const Data value = cartridge.getROM()[addr - 0x8000];
+  std::cout << "MainBus Read a Byte: " << std::hex << static_cast<int> (value) << std::endl;
+  return value;
+}
+```
+
+and CPU.hpp:29
+
+```cpp
+// OPEN THE API ONLY FOR TEST!
+Data get_acc() {
+  return r_acc;
+}
+```
+
+## DAY 05
+
+### 1. SFML多媒体库配置和使用
+
+根据自己所使用的操作系统，在 [SFML官方文档](https://www.sfml-dev.org/tutorials/2.5/) 找到对应的配置方式。
+
+建议最好使用官方已经编译好的 SDK，替换到系统的默认动态链接库目录或任意目录下（此时编译链接时需要制定对应的头文件和库文件目录）
+
+例如，在 macOS 下通过 `brew install sfml` 安装 SFML SDK后，将在 `/usr/local/Cellar/sfml/2.5.1` （或 `/usr/local/Cellar/sfml/2.5.1_1` 等）目录下保存头文件和库文件。需要在 makefile 下指定 `CFLAGS` 和 `LDFLAGS` 。
+
+```shell
+SFML_INC = /usr/local/Cellar/sfml/2.5.1_1/include
+
+CFLAGS = -g -Wall -I${INC} -I${SFML_INC} -std=c++11
+# 不仅要指定目录，还要指定对应链接的库，不然就是 undefined reference 
+LDFLAGS = -L/usr/local/Cellar/sfml/2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
+```
+
+**White Circe:**
+![White circle](./images/test1.png)
+
+**Red Circe:**
+![Red circle](./images/test2.png)
+
+### 2. PPU总线（Picture Bus）以及虚拟屏幕（Virtual Screen）的实现
+
+在使用 SFML 库创建一个 windows 后，内容的填充使用 VirtualScreen 类来实现。PictureBus 类似于我们之前实现的 MainBus，不过 PictureBus 是用来连接PPU（Picture Processing Unit,类比于现在的显卡）和 vdeio 相关的存储的。

@@ -27,9 +27,11 @@ class CPU {
   }
 
   //! OPEN THE API ONLY FOR TEST!
+  /*
   Data get_acc() {
     return r_acc;
   }
+  */
 
  private:
   // Instructions are split into five sets to make decoding easier

@@ -4,7 +4,7 @@
 #include <Cartridge.hpp>
 
 /* 2kB Interal RAM, mirrored 4 times */
-MainBus::MainBus() : m_RAM(0x800) {}
+MainBus::MainBus() : m_RAM(0x800), m_mapper(nullptr) {}
 //& For Test
 MainBus::MainBus(Cartridge& cartridge) : m_RAM(0x800), cartridge(cartridge) {}
 
@@ -18,11 +18,13 @@ Data MainBus::read(const Address& addr) const {
     return m_RAM[addr & 0x7ff];
   }
   //& For Test
+  /*
   if (addr >= 0x8000) {
     const Data value = cartridge.getROM()[addr - 0x8000];
     std::cout << "MainBus Read a Byte: " << std::hex << static_cast<int> (value) << std::endl;
     return value;
   }
+  */
   return 0;
 }
 

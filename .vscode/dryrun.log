@@ -1,5 +1,7 @@
 make --dry-run --keep-going --print-directory
 make: Entering directory `/Users/sudo/Desktop/practice/NES'
-g++  ./build/CPU.o ./build/Cartridge.o ./build/Emulator.o ./build/Log.o ./build/MainBus.o ./build/Mapper.o ./build/MapperNROM.o ./build/main.o -o run  
+clang++  -g -Wall -I./include -I/usr/local/Cellar/sfml/2.5.1_1/include -std=c++11 -o build/CPU.o -c source/CPU.cpp
+clang++  -g -Wall -I./include -I/usr/local/Cellar/sfml/2.5.1_1/include -std=c++11 -o build/Emulator.o -c source/Emulator.cpp
+clang++  -L/usr/local/Cellar/sfml/2.5.1_1/lib -lsfml-graphics -lsfml-window -lsfml-system ./build/CPU.o ./build/Cartridge.o ./build/Emulator.o ./build/Log.o ./build/MainBus.o ./build/Mapper.o ./build/MapperNROM.o ./build/main.o -o run  
 make: Leaving directory `/Users/sudo/Desktop/practice/NES'
  

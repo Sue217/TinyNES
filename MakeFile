@@ -1,10 +1,12 @@
-CC = g++ 
+CC = clang++ 
 
 INC = ./include
+SFML_INC = /usr/local/Cellar/sfml/2.5.1_1/include
 SRC = ./source
 BUD = ./build
 
-CFLAGS = -g -Wall -I${INC} -std=c++11
+CFLAGS = -g -Wall -I${INC} -I${SFML_INC} -std=c++11
+LDFLAGS = -L/usr/local/Cellar/sfml/2.5.1_1/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 SOURCES = $(wildcard ${SRC}/*.cpp)
 
@@ -19,7 +21,7 @@ TARGET = run
 
 # $@: target $^: all dependent files $<: the first dependent file
 ${TARGET}: ${OBJS}
-	$(CC) ${OBJS} -o $@  
+	$(CC) ${OBJS} -o $@ $(LDFLAGS)
 
 ${BUD}/%.o:${SRC}/%.cpp
 	$(CC) $(CFLAGS) -o $@ -c $<

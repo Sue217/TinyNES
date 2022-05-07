@@ -5,6 +5,12 @@
 #include <Cartridge.hpp>
 #include <MainBus.hpp>
 #include <Mapper.hpp>
+#include <SFML/Graphics.hpp>
+#include <VirtualScreen.hpp>
+#include <PPU.hpp>
+
+constexpr int nesVideoWidth = ScanlineVisibleDots;
+constexpr int nesVideoHeight = VisibleScanlines;
 
 class Emulator {
  public:
@@ -16,6 +22,9 @@ class Emulator {
   CPU m_cpu;
   Cartridge m_cartridge;
   std::unique_ptr<Mapper> m_mapper;
+  sf::RenderWindow m_window;
+  VirtualScreen m_emulatorScreen;
+  float m_screenScale;
 };
 
 #endif  // _EMULATOR_H_

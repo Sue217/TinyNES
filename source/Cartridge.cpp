@@ -43,7 +43,8 @@ bool Cartridge::loadFromFile(std::string path) {
   LOG(Info) << "Reading ROM from path: " << path << std::endl;
 
   // read header in .NES file
-  std::vector<Data> header(0x10);
+  std::vector<Data> header;
+  header.resize(0x10);
 
   if (!romFile.read(reinterpret_cast<char*>(&header[0]), 0x10)) {
     LOG(Error) << "Reading iNES header failed." << std::endl;
