@@ -1,7 +1,7 @@
 # Quick Start
 
 ```shell
-git clone https://github.com/sujb0217/TinyNES.git
+git clone git@github.com:sujb0217/TinyNES.git
 
 cd TinyNES
 
