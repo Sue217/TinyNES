@@ -330,3 +330,44 @@ This instruction affects the accumulator. The carry flag is set if the result is
 ```
 
 **The number of times the pc is incremented by one depends on the number of times the operation is fetched from memory.**
+
+```cpp
+/*
+ * 参考：https://blog.csdn.net/qq_34254642/article/details/104193445
+ * NES使用两个调色板，
+ * 每个有16个条目，图像调色板($3F00-$3F0F)和精灵调色板($3F10-$3F1F)。
+ * 图像调色板显示当前背景块可用的颜色。精灵调色板显示精灵当前可用的颜色。这些调色板不存储实际的颜色值，而是系统调色板中的颜色索引。由于只需要64个唯一值，所以可以忽略第6和第7位。
+ * 
+ * 调色板条目$3F00是背景色，用于透明。
+ * 使用镜像使调色板中的每四个字节是$3F00的一个副本。
+ * 因此，$3F04、$3F08 $3FOC、$3F10、$3F14、$3F18和$3F1C只是$3F00的副本。
+ * 每个调色板的颜色是13，而不是16。因此，在任何时候，屏幕上的颜色总数是52种颜色中的25种。两个调色板也镜像到$3F20-$3FFF。
+*/
+
+
+//Colors in RGBA (8 bit colors)
+// red green blue alpha 格式
+// 由调色板映射实际显示的颜色
+```
+
+# !!!Previous Bugs!!!
+
+## CPU.cpp
+
+### 1. 146 lines
+
+### 2. 166 lines
+
+### 3. 234 lines
+
+### 4. 376 lines
+
+### 5. 388 lines
+
+### 6. 522 lines
+
+## Emulator.cpp
+
+### pay attention to line 77 & 78 line
+
+### pay attention to the function run() in 81 lines

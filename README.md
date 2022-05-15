@@ -201,3 +201,17 @@ LDFLAGS = -L/usr/local/Cellar/sfml/2.5.1/lib -lsfml-graphics -lsfml-window -lsfm
 ### 2. PPU总线（Picture Bus）以及虚拟屏幕（Virtual Screen）的实现
 
 在使用 SFML 库创建一个 windows 后，内容的填充使用 VirtualScreen 类来实现。PictureBus 类似于我们之前实现的 MainBus，不过 PictureBus 是用来连接PPU（Picture Processing Unit,类比于现在的显卡）和 vdeio 相关的存储的。
+
+## DAY N
+
+### Add Controller and read user's input
+
+### Conclusion
+
+**Copy more code and feel more confused...**
+
+Struggled and Debugged so many days for the faults in Emulator.cpp: run() because I didn't learn about it before, and in CPU.cpp because of my careless...
+
+**I suppose, therefore, learn more and understand the essence of the problems are necessary!**
+
+## It truly a good project for me but not a happy process ;P

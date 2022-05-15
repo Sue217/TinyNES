@@ -31,43 +31,6 @@ constexpr auto NMI = 0xfffa;
 constexpr auto RESET = 0xfffc;
 constexpr auto IRQ = 0xfffe;
 
-enum branchOnFlag {
-  Negative,
-  Overflow,
-  Carry,
-  Zero,
-};
-
-enum operation1 {
-  ORA, /* ACC:=ACC or {adr} */
-  AND, /* ACC:=ACC&{adr} */
-  EOR, /* ACC:=ACC exor {adr} */
-  ADC, /* ACC:=ACC+{adr} */
-  STA, /* STOREACC {adr}:=ACC */
-  LDA, /* LOADACC ACC:={adr} */
-  CMP, /* ACC-{adr} */
-  SBC, /* ACC:=ACC-{adr} */
-};
-
-enum operation2 {
-  ASL, /* {adr}:={adr}<<1 */
-  ROL, /* {adr}:={adr}*2+C */
-  LSR, /* {adr}:={adr}/2 */
-  ROR, /* {adr}:={adr}/2+C*128 */
-  STX, /* {adr}:=X */
-  LDX, /* X:={adr} */
-  DEC, /* {adr}:={adr}-1 */
-  INC, /* {adr}:={adr}+1 */
-};
-
-enum operation0 {
-  BIT = 1, /* N:=b7 V:=b6 Z:=ACC&{adr} */
-  STY = 4, /* STOREY {adr}:=Y */
-  LDY,     /* LOADY Y:={adr} */
-  CPY,     /* Y-{adr} */
-  CPX,     /* X-{adr} */
-};
-
 /*
  * imm = #$00
  * zp = $00
@@ -81,6 +44,43 @@ enum operation0 {
  * ind = ($0000)
  * rel = $0000 (PC-relative)
 */
+
+enum branchOnFlag {
+  Negative,
+  Overflow,
+  Carry,
+  Zero
+};
+
+enum operation1 {
+  ORA,
+  AND,
+  EOR,
+  ADC,
+  STA,
+  LDA,
+  CMP,
+  SBC,
+};
+
+enum operation2 {
+  ASL,
+  ROL,
+  LSR,
+  ROR,
+  STX,
+  LDX,
+  DEC,
+  INC,
+};
+
+enum operation0 {
+  BIT = 1,
+  STY = 4,
+  LDY,
+  CPY,
+  CPX,
+};
 
 enum addrMode1 {
   IndexedIndirectX,
@@ -103,39 +103,39 @@ enum addrMode2 {
 };
 
 enum operationImplied {
-  /* Jump/Flag commands */
+  NOP = 0xea,
   BRK = 0x00,
   JSR = 0x20,
   RTI = 0x40,
   RTS = 0x60,
+
   JMP = 0x4C,
-  JMPI = 0x6C, //JMP Indirect
+  JMPI = 0x6C,  // JMP Indirect
+
+  PHP = 0x08,
+  PLP = 0x28,
+  PHA = 0x48,
+  PLA = 0x68,
+
+  DEY = 0x88,
+  DEX = 0xca,
+  TAY = 0xa8,
+  INY = 0xc8,
+  INX = 0xe8,
+
   CLC = 0x18,
   SEC = 0x38,
   CLI = 0x58,
   SEI = 0x78,
+  TYA = 0x98,
   CLV = 0xb8,
   CLD = 0xd8,
   SED = 0xf8,
-  NOP = 0xea,
 
- /* Move commands */
-  TAX = 0xaa,
   TXA = 0x8a,
-  TAY = 0xa8,
-  TYA = 0x98,
-  TSX = 0xba,
   TXS = 0x9a,
-  PLA = 0x68,
-  PHA = 0x48,
-  PLP = 0x28,
-  PHP = 0x08,
-
-  /* Logical and arithmetic commands */
-  DEX = 0xca,
-  DEY = 0x88,
-  INX = 0xe8,
-  INY = 0xc8,
+  TAX = 0xaa,
+  TSX = 0xba,
 };
 
 /*

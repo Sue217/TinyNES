@@ -1,5 +1,7 @@
 #include <MapperNROM.hpp>
 #include <Log.hpp>
+#include <cassert>
+// #include <algo/debug.h>
 
 MapperNROM::MapperNROM(Cartridge& cart) : Mapper(cart, Mapper::NROM) {
   if (cart.getROM().size() == 0x4000) {
@@ -8,11 +10,13 @@ MapperNROM::MapperNROM(Cartridge& cart) : Mapper(cart, Mapper::NROM) {
     m_oneBank = false; // 2 banks
   }
 
+  // debug(cart.getVROM().size(), cart.getVROM());
   if (cart.getVROM().size() == 0) {
     m_usesCharacterRAM = true;
     m_characterRAM.resize(0x2000);
     LOG(Info) << "Uses character RAM." << std::endl;
   } else {
+    LOG(Info) << "Using CHR-ROM" << std::endl;
     m_usesCharacterRAM = false;
   }
 }
@@ -41,6 +45,7 @@ const Data* MapperNROM::getPagePtr(Address addr) {
 
 Data MapperNROM::readCHR(Address addr) {
   if (m_usesCharacterRAM) {
+    assert(0 <= addr && addr < 0x2000);
     return m_characterRAM[addr];
   } else {
     return m_cartridge.getVROM()[addr];
@@ -49,6 +54,7 @@ Data MapperNROM::readCHR(Address addr) {
 
 void MapperNROM::writeCHR(Address addr, Data value) {
   if (m_usesCharacterRAM) {
+    assert(0 <= addr && addr < 0x2000);
     m_characterRAM[addr] = value;
   } else {
     LOG(Info) << "Read-only CHR memory write attempt at " << std::hex << addr << std::endl;

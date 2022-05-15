@@ -1,14 +1,66 @@
+#include <iomanip>
 #include <MainBus.hpp>
 #include <CpuOpcodes.hpp>
 #include <CPU.hpp>
 #include <Log.hpp>
+
+/* CPU Memory Map
+--------------------------------------- $10000
+ Upper Bank of Cartridge ROM
+--------------------------------------- $C000
+ Lower Bank of Cartridge ROM
+--------------------------------------- $8000
+ Cartridge RAM (may be battery-backed)
+--------------------------------------- $6000
+ Expansion Modules
+--------------------------------------- $5000
+ Input/Output
+--------------------------------------- $2000
+ 2kB Internal RAM, mirrored 4 times
+--------------------------------------- $0000
+*/
 
 CPU::CPU(MainBus& mem) : m_bus(mem) {
   f_b = 0;
   f_u = 1;
 }
 
-// void CPU::interrupt(InterruptType type)
+void CPU::interrupt(InterruptType type) {
+  if (f_i && type != _NMI_ && type != _BRK_) {
+    return;
+  }
+  if (type == _BRK_) { //& +1 if BRK, a quirk of 6502
+    ++r_pc;
+  }
+  // save PC value
+  push(r_pc >> 8);
+  push(r_pc);
+
+  Data flags = f_n << 7 |
+               f_v << 6 |
+               f_u << 5 |
+   (type == _BRK_) << 4 | //^ B flag set if BRK
+               f_d << 3 |
+               f_i << 2 |
+               f_z << 1 |
+               f_c;
+  // save status
+  push(flags);
+
+  f_i = true;
+
+  switch (type) {
+    case _IRQ_:
+    case _BRK_:
+      r_pc = readAddress(IRQ);
+      break;
+    case _NMI_:
+      r_pc = readAddress(NMI);
+      break;
+  }
+  
+  m_skipCycles += 7;
+}
 
 void CPU::reset() {
   reset(readAddress(RESET));
@@ -35,7 +87,8 @@ void CPU::step() {
     return;
   }
   m_skipCycles = 0;
-  /* Generate Program Status Words(PSW)
+  //& Generate Program Status Words(PSW)
+  /*
   int psw = f_n << 7 |
             f_v << 6 |
             f_u << 5 |
@@ -50,7 +103,7 @@ void CPU::step() {
   auto cycleLength = operationCycles[opcode];
 
   if (cycleLength && (executeImplied(opcode) || executeBranch(opcode) ||
-                      executeType1(opcode) || executeType2(opcode))) {
+    executeType1(opcode) || executeType2(opcode) || executeType0(opcode))) {
     m_skipCycles += cycleLength;
   } else {
     LOG(Error) << "Unrecognized opcode: " << std::hex << +opcode << std::endl;
@@ -63,7 +116,7 @@ Address CPU::readAddress(Address addr) {
 
 void CPU::push(Data value) {
   m_bus.write(0x100 | r_sp, value);
-  --r_sp;
+  --r_sp; // Hardware stacks grow downward!
 }
 
 Data CPU::pull() {
@@ -82,9 +135,17 @@ void CPU::set_ZN(Data value) {
   f_n = value & 0x80;
 }
 
+void CPU::skipDMACycles() {
+  m_skipCycles += 513;             // 256 read + 256 write + 1 dummy read
+  m_skipCycles += (m_cycles & 1);  // +1 if on odd cycle
+}
+
 bool CPU::executeImplied(Data opcode) {
   switch (static_cast<operationImplied> (opcode)) {
     case NOP: break;
+    case BRK:
+      interrupt(_BRK_);
+      break;
     case JSR:
       /*
        * This instruction transfers control of the PC to a subroutine
@@ -101,6 +162,12 @@ bool CPU::executeImplied(Data opcode) {
       push(static_cast<Data> ((r_pc + 1) >> 8));
       push(static_cast<Data> (r_pc + 1));
       r_pc = readAddress(r_pc);
+      break;
+    case RTS:
+      /* Return from  Subroutine*/
+      r_pc = pull();
+      r_pc |= pull() << 8;
+      ++r_pc;
       break;
     case RTI:
       {
@@ -164,6 +231,7 @@ bool CPU::executeImplied(Data opcode) {
       break;
     case PLA:
       r_acc = pull();
+      set_ZN(r_acc);
       break;
     case PHA:
       push(r_acc);
@@ -305,8 +373,8 @@ bool CPU::executeType1(Data opcode) {
           location = m_bus.read(zero_addr & 0xff) | m_bus.read((zero_addr + 1) & 0xff) << 8;
           if (op != STA) {
             setPageCrossed(location, location + r_y);
-            location += r_y;
           }
+          location += r_y;
         }
         break;
       case IndexedX:
@@ -317,6 +385,10 @@ bool CPU::executeType1(Data opcode) {
       case AbsoluteY:
         location = readAddress(r_pc);
         r_pc += 2;
+        if (op != STA) {
+          setPageCrossed(location, location + r_y);
+        }
+        location += r_y;
         break;
       case AbsoluteX:
         location = readAddress(r_pc);
@@ -371,6 +443,15 @@ bool CPU::executeType1(Data opcode) {
       case LDA:
         r_acc = m_bus.read(location);
         set_ZN(r_acc);
+        /*
+        LOG(Info) << "LDA: "
+                  << std::hex
+                  << static_cast<int> (location)
+                  << "\t ACC is: "
+                  << std::hex
+                  << static_cast<int> (r_acc)
+                  << std::endl;
+        */
         break;
       case SBC:
         /*
@@ -432,6 +513,21 @@ bool CPU::executeType2(Data opcode) {
       case Indexed:
         {
           location = m_bus.read(r_pc++);
+          Data index;
+          if (op == LDX || op == STX) {
+            index = r_y;
+          } else {
+            index = r_x;
+          }
+          //? setPageCrossed(location, location + index);
+          //? location += index;
+          location = (location + index) & 0xff;
+        }
+        break;
+      case AbsoluteIndexed:
+        {
+          location = readAddress(r_pc);
+          r_pc += 2;
           Data index;
           if (op == LDX || op == STX) {
             index = r_y;
@@ -513,12 +609,16 @@ bool CPU::executeType2(Data opcode) {
   return false;
 }
 
+// static constexpr auto debug_opcode = 0xa0;
+
 bool CPU::executeType0(Data opcode) {
   if ((opcode & instructionModeMask) == 0x0) {
     Address location = 0;
+    // if (opcode == debug_opcode) {
+    //   LOG(Info) << "Fetch Instruction: " << std::hex << static_cast<int> (debug_opcode) << std::endl;
+    // }
     auto op = static_cast<operation0>((opcode & operationMask) >> operationShift);
     auto addr = static_cast<addrMode2> ((opcode & addrModeMask) >> addrModeShift);
-    
     switch (addr) {
       case Immediate_:
         location = r_pc++;
@@ -557,6 +657,15 @@ bool CPU::executeType0(Data opcode) {
         break;
       case LDY:
         r_y = m_bus.read(location);
+        /*
+        LOG(Info) << "LDY: " 
+                  << std::hex 
+                  << static_cast<int> (location)
+                  << "\t r_y is: "
+                  << std::hex
+                  << static_cast<int>(r_y)
+                  << std::endl;
+        */
         set_ZN(r_y);
         break;
       case CPY:

@@ -5,6 +5,7 @@
 #include <Cartridge.hpp>
 #include <PictureBus.hpp>
 #include <VirtualScreen.hpp>
+#include <PaletteColors.hpp>
 
 constexpr int ScanlineCycleLength = 341;
 constexpr int ScanlineEndCycle = 340;
@@ -22,7 +23,6 @@ class PPU {
   PPU(PictureBus &bus, VirtualScreen &screen);
   void step();
   void reset();
-/*
   void setInterruptCallback(std::function<void(void)> cb);
 
   void doDMA(const Data *page_ptr);
@@ -40,15 +40,15 @@ class PPU {
   Data getData();
   Data getOAMData();
   void setOAMData(Data value);
-*/
+
  private:
-  // Data readOAM(Data addr);
-  // void writeOAM(Data addr, Data value);
   Data read(Address addr);
+  Data readOAM(Data addr);
+  void writeOAM(Data addr, Data value);
   PictureBus& m_bus;
   VirtualScreen& m_screen;
 
-  // std::function<void(void)> m_vblankCallback;
+  std::function<void(void)> m_vblankCallback;
 
   std::vector<Data> m_spriteMemory;
   std::vector<Data> m_scanlineSprites;

@@ -2,11 +2,12 @@ CC = clang++
 
 INC = ./include
 SFML_INC = /usr/local/Cellar/sfml/2.5.1_1/include
+SFML_LIB = /usr/local/Cellar/sfml/2.5.1_1/lib
 SRC = ./source
 BUD = ./build
 
 CFLAGS = -g -Wall -I${INC} -I${SFML_INC} -std=c++11
-LDFLAGS = -L/usr/local/Cellar/sfml/2.5.1_1/lib -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS = -L$(SFML_LIB) -lsfml-graphics -lsfml-window -lsfml-system
 
 SOURCES = $(wildcard ${SRC}/*.cpp)
 

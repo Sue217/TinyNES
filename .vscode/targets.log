@@ -7,8 +7,10 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
  
+make: *** No rule to make target `all'.  Stop.
 
-# Make data base, printed on Sat May  7 11:41:14 2022
+
+# Make data base, printed on Sun May 15 21:46:09 2022
 
 # Variables
 
@@ -16,11 +18,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
-# makefile (from `makefile', line 5)
+# makefile (from `makefile', line 6)
 SRC = ./source
 # environment
 VSCODE_LOG_NATIVE = false
-# makefile (from `makefile', line 20)
+# makefile (from `makefile', line 21)
 TARGET = run
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
@@ -32,25 +34,23 @@ TARGET = run
 CURDIR := /Users/sudo/Desktop/practice/NES
 # makefile
 SHELL = /bin/sh
-# environment
  
-make: *** No rule to make target `all'.  Stop.
-
+# environment
 VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{},"_languagePackSupport":true}
 # environment
 _ = /usr/bin/make
-# makefile (from `makefile', line 8)
+# makefile (from `makefile', line 9)
 CFLAGS = -g -Wall -I${INC} -I${SFML_INC} -std=c++11
 # makefile (from `makefile', line 1)
 MAKEFILE_LIST :=  makefile
-# makefile (from `makefile', line 11)
+# makefile (from `makefile', line 12)
 SOURCES = $(wildcard ${SRC}/*.cpp)
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/cc/x1w7ww9s4fs23fyl496z01p00000gn/T/vscode-ipc-24d4dce8-0c2c-4ad5-b6b1-dcca2a39acd8.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/cc/x1w7ww9s4fs23fyl496z01p00000gn/T/vscode-ipc-73d52925-cb2d-467c-9882-473b052a5f7a.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -61,25 +61,25 @@ LSCOLORS = Gxfxcxdxbxegedabagacad
 VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
-# makefile (from `makefile', line 9)
-LDFLAGS = -L/usr/local/Cellar/sfml/2.5.1_1/lib -lsfml-graphics -lsfml-window -lsfml-system
+# makefile (from `makefile', line 10)
+LDFLAGS = -L$(SFML_LIB) -lsfml-graphics -lsfml-window -lsfml-system
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # makefile (from `makefile', line 4)
 SFML_INC = /usr/local/Cellar/sfml/2.5.1_1/include
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.h0EcnelhE1/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.OEvFLjJOdL/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
 VSCODE_PIPE_LOGGING = true
-# makefile (from `makefile', line 17)
+# makefile (from `makefile', line 18)
 OBJS = $(patsubst %.cpp,${BUD}/%.o,$(notdir ${SOURCES}))
 # environment
 PWD = /Users/sudo/Desktop/practice/NES
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
-# makefile (from `makefile', line 6)
+# makefile (from `makefile', line 7)
 BUD = ./build
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
@@ -99,6 +99,8 @@ ZSH = /Users/clementfradetnormand/.oh-my-zsh
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
+# makefile (from `makefile', line 5)
+SFML_LIB = /usr/local/Cellar/sfml/2.5.1_1/lib
 # environment
 XPC_FLAGS = 0x0
 # default
@@ -123,6 +125,7 @@ LESS = -R
 MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
 # makefile (from `makefile', line 3)
 INC = ./include
+ 
 # default
 .VARIABLES := 
 # environment
@@ -170,9 +173,9 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 40820
+VSCODE_PID = 939
 # variable set hash-table stats:
-# Load=78/1024=8%, Rehash=0, Collisions=5/109=5%
+# Load=79/1024=8%, Rehash=0, Collisions=5/110=5%
 
 # Pattern-specific Variable Values
 
@@ -180,15 +183,15 @@ VSCODE_PID = 40820
 
 # Directories
 
-# . (device 16777221, inode 20226449): 19 files, no impossibilities.
-# ./source (device 16777221, inode 20226603): 10 files, no impossibilities.
+# . (device 16777226, inode 20226449): 19 files, no impossibilities.
+# ./source (device 16777226, inode 20226603): 14 files, no impossibilities.
 
-# 29 files, no impossibilities in 2 directories.
+# 33 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
 build/%.o: ./source/%.cpp
-#  commands to execute (from `makefile', line 27):
+#  commands to execute (from `makefile', line 28):
 	$(CC) $(CFLAGS) -o $@ -c $<
 	
 
@@ -237,7 +240,7 @@ build/CPU.o:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-07 11:40:27
+#  Last modified 2022-05-15 21:44:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -246,6 +249,7 @@ makefile:
 # Not a target:
 build/Emulator.o:
 #  Implicit rule search has not been done.
+ 
 #  Modification time never checked.
 #  File has not been updated.
 
@@ -267,12 +271,18 @@ build/Mapper.o:
 #  Modification time never checked.
 #  File has not been updated.
 
-run: build/CPU.o build/Cartridge.o build/Emulator.o build/Log.o build/MainBus.o build/Mapper.o build/MapperNROM.o build/main.o
+# Not a target:
+build/Controller.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `makefile', line 24):
-	$(CC) $(LDFLAGS) ${OBJS} -o $@  
+
+run: build/CPU.o build/Cartridge.o build/Controller.o build/Emulator.o build/Log.o build/MainBus.o build/Mapper.o build/MapperNROM.o build/PPU.o build/PictureBus.o build/VirtualScreen.o build/main.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `makefile', line 25):
+	$(CC) ${OBJS} -o $@ $(LDFLAGS)
 	
 
 clean:
@@ -280,11 +290,17 @@ clean:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `makefile', line 32):
+#  commands to execute (from `makefile', line 33):
 	find $(BUD) -name *.o -exec rm -rf {} \;
 	# rm -rf main.o
 	rm -rf ${TARGET}
 	
+
+# Not a target:
+build/PictureBus.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 build/Cartridge.o:
@@ -298,8 +314,20 @@ build/MapperNROM.o:
 #  Modification time never checked.
 #  File has not been updated.
 
+# Not a target:
+build/VirtualScreen.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+build/PPU.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 # files hash-table stats:
-# Load=15/1024=1%, Rehash=0, Collisions=0/36=0%
+# Load=19/1024=2%, Rehash=0, Collisions=0/44=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -311,6 +339,6 @@ build/MapperNROM.o:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sat May  7 11:41:14 2022
+# Finished Make data base on Sun May 15 21:46:09 2022
 
  

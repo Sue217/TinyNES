@@ -7,6 +7,10 @@ Log& Log::get() {
   return instance;
 }
 
+std::ostream& Log::getStream() {
+  return *m_logStream;
+}
+
 void Log::setLogStream(std::ostream& stream) {
   m_logStream = &stream;
 }

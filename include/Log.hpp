@@ -6,17 +6,17 @@
 #include <iostream>
 #include <memory>
 
-#ifndef _FILENAME_
-#define _FILENAME_ _FILE_
+#ifndef __FILENAME__
+#define __FILENAME__ __FILE__
 #endif
-/*
+
 #define LOG(level)                                                             \
   if (level <= Log::get().getLevel())                                          \
   Log::get().getStream() << '[' << __FILENAME__ << ":" << std::dec << __LINE__ \
                          << "] "
-*/
+
 //! For test
-#define LOG(level) std::cout
+// #define LOG(level) std::cerr
 
 #define LOG_CPU \
   if (CpuTrace == Log::get().getLevel()) Log::get().getCpuTraceStream()
@@ -33,6 +33,7 @@ class Log {
  public:
   ~Log();
   static Log& get();
+  std::ostream& getStream();
 
   void setLogStream(std::ostream& stream);
   std::ostream& getLogStream();

@@ -15,7 +15,8 @@ class CPU {
   CPU(MainBus& mem);
 
   //! Assuming sequential execution, for asynchronously calling this with Execute, further work needed
-  // void interrupt(InterruptType type);
+  void interrupt(InterruptType type);
+  void skipDMACycles();
 
   void reset();
   void reset(Address start);
