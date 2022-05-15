@@ -14,7 +14,9 @@ make
 ./run ./games/Super_mario_brothers.nes
 ```
 
-**Playing:**![running](https://github.com/sujb0217/TinyNES/blob/main/images/running.png)
+### Playing:
+
+![running](https://github.com/sujb0217/TinyNES/blob/main/images/running.png)
 
 # Realization of NES's CPU Simulator with C++
 
