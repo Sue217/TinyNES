@@ -234,4 +234,4 @@ Struggled and Debugged so many days for the faults in Emulator.cpp: run() becaus
 
 **I suppose, therefore, learn more and understand the essence of the problems are necessary!**
 
-## It truly a good project for me but not a happy process ;P
+## It's truly a good project for me but not a happy process ;P
