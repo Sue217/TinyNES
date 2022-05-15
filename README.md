@@ -1,3 +1,21 @@
+# Quick Start
+
+```shell
+git clone https://github.com/sujb0217/TinyNES.git
+
+cd TinyNES
+
+mkdir build
+
+export LD_LIBRARY_PATH=<sfml-install-path>/lib
+
+make
+
+./run ./games/Super_mario_brothers.nes
+```
+
+**Playing:**![running](/Users/sudo/Desktop/practice/NES/images/running.png)
+
 # Realization of NES's CPU Simulator with C++
 
 ## DAY 01
